@@ -1,0 +1,81 @@
+MS ACCESS MANUAL SETUP INSTRUCTIONS
+====================================
+
+If the SQL scripts don't work, follow these manual steps:
+
+1. CREATE TABLES (via Design View):
+   
+   a) Equipment Table:
+      - EquipmentID: AutoNumber (Primary Key)
+      - ItemName: Short Text (100)
+      - Category: Short Text (50)
+      - Description: Long Text (Memo)
+      - Stock: Number (Integer)
+      - Unit: Short Text (20)
+      - CreatedAt: Date/Time
+      - UpdatedAt: Date/Time
+
+   b) Borrowers Table:
+      - BorrowerID: AutoNumber (Primary Key)
+      - FullName: Short Text (100)
+      - ContactNo: Short Text (20)
+      - Address: Short Text (200)
+      - Email: Short Text (100)
+      - CreatedAt: Date/Time
+      - UpdatedAt: Date/Time
+
+   c) Borrowings Table:
+      - BorrowingID: AutoNumber (Primary Key)
+      - BorrowerID: Number (Long Integer)
+      - BorrowDate: Date/Time
+      - ExpectedReturnDate: Date/Time
+      - ActualReturnDate: Date/Time
+      - Status: Short Text (20)
+      - Notes: Long Text (Memo)
+      - CreatedAt: Date/Time
+      - UpdatedAt: Date/Time
+
+   d) BorrowingItems Table:
+      - BorrowingItemID: AutoNumber (Primary Key)
+      - BorrowingID: Number (Long Integer)
+      - EquipmentID: Number (Long Integer)
+      - Quantity: Number (Integer)
+      - ReturnedQuantity: Number (Integer)
+      - CreatedAt: Date/Time
+      - UpdatedAt: Date/Time
+
+2. CREATE RELATIONSHIPS:
+   - Go to Database Tools > Relationships
+   - Add all four tables
+   - Create relationships:
+     * Borrowers.BorrowerID -> Borrowings.BorrowerID (Enforce Referential Integrity)
+     * Borrowings.BorrowingID -> BorrowingItems.BorrowingID (Enforce Referential Integrity)
+     * Equipment.EquipmentID -> BorrowingItems.EquipmentID (Enforce Referential Integrity)
+
+3. SET DEFAULT VALUES:
+   For Equipment table:
+   - Stock: Default Value = 0
+   - CreatedAt: Default Value = Now()
+   - UpdatedAt: Default Value = Now()
+
+   For Borrowings table:
+   - Status: Default Value = "Active"
+   - CreatedAt: Default Value = Now()
+   - UpdatedAt: Default Value = Now()
+
+   For BorrowingItems table:
+   - Quantity: Default Value = 1
+   - ReturnedQuantity: Default Value = 0
+   - CreatedAt: Default Value = Now()
+   - UpdatedAt: Default Value = Now()
+
+   For Borrowers table:
+   - CreatedAt: Default Value = Now()
+   - UpdatedAt: Default Value = Now()
+
+4. CREATE INDEXES (via Design View):
+   - Equipment: ItemName, Category
+   - Borrowers: FullName
+   - Borrowings: BorrowerID, BorrowDate, Status
+   - BorrowingItems: BorrowingID, EquipmentID
+

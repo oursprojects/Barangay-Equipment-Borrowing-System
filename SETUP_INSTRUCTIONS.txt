@@ -1,0 +1,275 @@
+BARANGAY EQUIPMENT BORROWING SYSTEM - SETUP INSTRUCTIONS
+==========================================================
+
+Developed by:
+- Mike Ryno Santiago
+- Jestoni Flores
+- Deejay Angelo
+
+Project: IT 313 Final Group Project
+Version: 1.0.0
+
+================================================================================
+STEP 1: INSTALL MICROSOFT ACCESS DATABASE ENGINE
+================================================================================
+
+1. Download Microsoft Access Database Engine 2016 Redistributable from:
+   https://www.microsoft.com/en-us/download/details.aspx?id=54920
+
+2. Choose the correct version:
+   IMPORTANT: Choose based on your Office installation, NOT your Windows version!
+   
+   - If you have Office 64-bit installed → Use x64 version
+   - If you have Office 32-bit installed → Use x86 version
+   - If you don't have Office installed → Use x64 for 64-bit Windows, x86 for 32-bit Windows
+   
+   To check your Office version:
+   - Open any Office application (Word, Excel, etc.)
+   - Go to File → Account → About [Application]
+   - Look for "64-bit" or "32-bit" in the version information
+
+3. Install the downloaded file:
+   - Run the installer as Administrator
+   - Follow the installation wizard
+   - Restart your computer if prompted
+
+================================================================================
+STEP 2: BUILD THE APPLICATION
+================================================================================
+
+1. Open Visual Studio 2022
+2. Open the solution file: BarangayEquipmentBorrowing.sln
+3. Restore NuGet packages (if needed):
+   - Right-click on solution → Restore NuGet Packages
+4. Build the solution:
+   - Press Ctrl+Shift+B or go to Build → Build Solution
+   - Wait for build to complete successfully
+
+================================================================================
+STEP 3: CREATE THE DATABASE FOLDER
+================================================================================
+
+1. Navigate to the output folder:
+   [Your Project Path]\bin\Debug\net8.0-windows\
+
+2. Create a folder named "Data" in that directory:
+   - Right-click in the folder → New → Folder
+   - Name it "Data" (case-sensitive)
+
+3. Verify the folder path:
+   Final path should be: bin\Debug\net8.0-windows\Data\
+
+================================================================================
+STEP 4: CREATE THE DATABASE FILE
+================================================================================
+
+1. Open Microsoft Access (if you have it installed)
+   - If you don't have Access, the Database Engine you installed is sufficient
+
+2. Create a new blank database:
+   - Click "Blank Database" (or File → New → Blank Database)
+   - Set the file name to: BarangayEquipment.accdb
+   - IMPORTANT: Navigate to the Data folder you created in Step 3
+   - Save location: [Your Project]\bin\Debug\net8.0-windows\Data\BarangayEquipment.accdb
+   - Click "Create"
+
+3. Close the database (close Access if it opened)
+   - The database file is now created but empty
+
+================================================================================
+STEP 5: CREATE TABLES (Choose ONE method)
+================================================================================
+
+METHOD A: AUTO-SEED (RECOMMENDED - EASIEST)
+--------------------------------------------
+The application will automatically create tables and insert sample data on first run!
+
+1. Simply run the application (F5 in Visual Studio)
+2. Click "Start System" on the welcome screen
+3. The application will automatically:
+   - Create all required tables
+   - Insert 22 sample equipment items
+   - Insert 22 sample borrowers
+   - Insert 30 sample borrowing transactions
+4. You'll see a message: "Database seeded successfully with sample data"
+
+METHOD B: MANUAL SQL SETUP
+---------------------------
+If you prefer to create tables manually:
+
+1. Open the database file in Microsoft Access:
+   - Double-click BarangayEquipment.accdb
+
+2. Go to Create tab → Query Design
+   - Close the "Show Table" dialog that appears
+
+3. Click "SQL View" button (top-left of the ribbon)
+
+4. Open the file: Database\create_tables.sql
+
+5. Copy and paste each CREATE TABLE statement one at a time:
+   - Copy the first CREATE TABLE statement
+   - Paste into SQL View
+   - Click Run (red exclamation mark button)
+   - Repeat for each table
+
+6. For foreign keys and indexes:
+   - Copy ALTER TABLE statements
+   - Run them one by one
+   - Copy CREATE INDEX statements
+   - Run them one by one
+
+7. Close Access when done
+
+METHOD C: MANUAL DESIGN VIEW (If SQL doesn't work)
+---------------------------------------------------
+1. Follow the detailed instructions in: Database\create_tables_manual.txt
+2. Create each table using Design View
+3. Set field types and properties manually
+4. Create relationships via Database Tools → Relationships
+
+================================================================================
+STEP 6: RUN THE APPLICATION
+================================================================================
+
+1. In Visual Studio, press F5 to run the application
+   OR
+   Navigate to bin\Debug\net8.0-windows\ and double-click BarangayEquipmentBorrowing.exe
+
+2. You should see the Welcome Screen
+
+3. Click "Start System" to open the main application
+
+4. If database is empty, you'll see a message about seeding data
+   - The application will automatically populate sample data
+
+5. Verify the application is working:
+   - Check status bar (bottom) - should show "Database: Connected" in green
+   - Try opening Equipment Maintenance from the menu
+   - You should see sample equipment items
+
+================================================================================
+TROUBLESHOOTING
+================================================================================
+
+PROBLEM: "Database connection failed"
+--------------------------------------
+Checklist:
+1. ✅ Data folder exists?
+   Location: bin\Debug\net8.0-windows\Data\
+   If not, create it!
+
+2. ✅ Database file exists?
+   File: BarangayEquipment.accdb
+   Location: bin\Debug\net8.0-windows\Data\BarangayEquipment.accdb
+   If not, create it using Step 4 above
+
+3. ✅ Access Database Engine installed?
+   - Go to Control Panel → Programs and Features
+   - Look for "Microsoft Access Database Engine 2016 Redistributable"
+   - If not found, install from Step 1
+
+4. ✅ File permissions?
+   - Right-click Data folder → Properties → Security
+   - Ensure you have Read/Write permissions
+   - If not, click Edit and add your user with Full Control
+
+5. ✅ Database file not locked?
+   - Close Microsoft Access if database is open
+   - Close any other applications that might be using the file
+   - Try running the application again
+
+6. ✅ Correct Office version?
+   - If you have Office 64-bit, you MUST use x64 Database Engine
+   - If you have Office 32-bit, you MUST use x86 Database Engine
+   - Mixing versions will cause connection errors
+
+PROBLEM: "Some column is missing and can't be found"
+-----------------------------------------------------
+Solutions:
+1. Ensure all tables are created correctly
+2. Check column names match exactly (case-sensitive)
+3. Run the create_tables.sql script completely
+4. Verify relationships are set up correctly
+
+PROBLEM: Application doesn't start / Shows welcome screen then closes
+----------------------------------------------------------------------
+Solutions:
+1. Check for compilation errors in Visual Studio
+2. Verify Form1 is set as startup form
+3. Check Application.myapp file has MainForm = Form1
+4. Rebuild the solution (Build → Rebuild Solution)
+
+PROBLEM: "OleDbParameter is already contained" error
+-----------------------------------------------------
+This should be fixed in the latest code. If you still see it:
+1. Ensure you have the latest code version
+2. The DataAccess module should clone parameters
+3. Rebuild the solution
+
+PROBLEM: Tables not created automatically
+-----------------------------------------
+If auto-seed doesn't create tables:
+1. Check database file permissions (read/write)
+2. Verify database file is not read-only
+3. Try creating tables manually using Method B or C above
+4. Check error messages in Visual Studio Output window
+
+================================================================================
+VERIFICATION CHECKLIST
+================================================================================
+
+After setup, verify:
+- [ ] Data folder exists: bin\Debug\net8.0-windows\Data\
+- [ ] Database file exists: BarangayEquipment.accdb
+- [ ] Access Database Engine is installed
+- [ ] Application starts and shows welcome screen
+- [ ] Status bar shows "Database: Connected" (green)
+- [ ] Can open Equipment Maintenance from menu
+- [ ] Can see sample data (if auto-seeded)
+- [ ] Can add new equipment item
+- [ ] Can create borrowing transaction
+
+================================================================================
+QUICK REFERENCE
+================================================================================
+
+Folder Structure:
+├── bin\Debug\net8.0-windows\
+│   ├── BarangayEquipmentBorrowing.exe
+│   └── Data\
+│       └── BarangayEquipment.accdb
+
+Database Engine Download:
+https://www.microsoft.com/en-us/download/details.aspx?id=54920
+
+Database Schema:
+- Equipment (Master table)
+- Borrowers (Master table)
+- Borrowings (Transaction header)
+- BorrowingItems (Transaction detail)
+
+Sample Data (Auto-seeded):
+- 22 Equipment items
+- 22 Borrowers
+- 30 Borrowing transactions
+
+================================================================================
+DEVELOPER INFORMATION
+================================================================================
+
+Developed by:
+- Mike Ryno Santiago
+- Jestoni Flores
+- Deejay Angelo
+
+Project: IT 313 Final Group Project
+Version: 1.0.0
+Framework: .NET 8.0
+Database: Microsoft Access (.accdb)
+
+For more information, see README.md
+
+================================================================================
+END OF SETUP INSTRUCTIONS
+================================================================================
