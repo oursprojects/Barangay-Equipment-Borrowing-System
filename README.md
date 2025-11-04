@@ -13,7 +13,7 @@ This project was developed by:
 - **Deejay Angelo**
 
 **Project**: IT 313 Final Group Project  
-**Academic Year**: 2024
+**Academic Year**: 2025
 
 ---
 
